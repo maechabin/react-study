@@ -29,12 +29,10 @@ class AppStore extends MapStore {
   }
   reduce(state, action) {
     console.dir('state: ' + state);
-    console.dir('action: ' + action);
+    //console.dir('action: ' + action);
     switch (action.type) {
       case act.HANDLECHANGE:
-        return {
-          'value': action.value
-        };
+        return state.set('value', action.value);
     }
   }
 }
@@ -49,7 +47,8 @@ class App extends React.Component {
   }
   static calculateState(prevState) {
     console.log(appStore.get('value'));
-    return appStore.getState();
+    //return appStore.get('value');
+    return appStore.getAll('value');
   }
   _handleChange(e) {
     e.preventDefault();
@@ -67,9 +66,9 @@ class App extends React.Component {
 
 class HelloMessage extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextProps.children);
-    console.log(this.props.children);
-    console.log(nextProps.children !== this.props.children);
+    //console.log(nextProps.children);
+    //console.log(this.props.children);
+    //console.log(nextProps.children !== this.props.children);
     //return nextProps.children !== this.props.children;
     return true;
   }

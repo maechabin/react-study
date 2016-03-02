@@ -25642,12 +25642,10 @@ var AppStore = function (_MapStore) {
     key: 'reduce',
     value: function reduce(state, action) {
       console.dir('state: ' + state);
-      console.dir('action: ' + action);
+      //console.dir('action: ' + action);
       switch (action.type) {
         case act.HANDLECHANGE:
-          return {
-            'value': action.value
-          };
+          return state.set('value', action.value);
       }
     }
   }]);
@@ -25700,7 +25698,8 @@ var App = function (_React$Component) {
     key: 'calculateState',
     value: function calculateState(prevState) {
       console.log(appStore.get('value'));
-      return appStore.getState();
+      //return appStore.get('value');
+      return appStore.getAll('value');
     }
   }]);
 
@@ -25719,9 +25718,9 @@ var HelloMessage = function (_React$Component2) {
   _createClass(HelloMessage, [{
     key: 'shouldComponentUpdate',
     value: function shouldComponentUpdate(nextProps, nextState) {
-      console.log(nextProps.children);
-      console.log(this.props.children);
-      console.log(nextProps.children !== this.props.children);
+      //console.log(nextProps.children);
+      //console.log(this.props.children);
+      //console.log(nextProps.children !== this.props.children);
       //return nextProps.children !== this.props.children;
       return true;
     }
