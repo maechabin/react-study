@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Map, List } from 'immutable';
 import { Dispatcher } from 'flux';
-import { ReduceStore, Container } from 'flux/utils';
+import { MapStore, Container } from 'flux/utils';
 
 // Dispatcher
 const dispatcher = new Dispatcher();
 
 // Action
 const act = {
-  HANDLECHANGE = 'handleChange'
+  HANDLECHANGE: 'handleChange'
 };
-const appAction = {
+const AppAction = {
   handleChange(val) {
     dispatcher.dispatch({
       type: act.HANDLECHANGE,
@@ -22,31 +23,37 @@ const appAction = {
 // Store
 class AppStore extends MapStore {
   getInitialState() {
-    return {
+    return Map({
       'value': null
-    }
+    });
   }
   reduce(state, action) {
+    console.dir('state: ' + state);
+    console.dir('action: ' + action);
     switch (action.type) {
       case act.HANDLECHANGE:
         return {
           'value': action.value
-        }
+        };
     }
   }
 }
 
+// Storeのインスタンス生成
+const appStore = new AppStore(dispatcher);
+
 // View
-class App extends React.Componen {
+class App extends React.Component {
   static getStores() {
-    return [AppStore];
+    return [appStore];
   }
   static calculateState(prevState) {
-    return AppStore.getState();
+    console.log(appStore.get('value'));
+    return appStore.getState();
   }
   _handleChange(e) {
     e.preventDefault();
-    appAction.HANDLECHANGE(this.refs.myInput.value.trim())
+    AppAction.handleChange(this.refs.myInput.value.trim());
   }
   render() {
     return (

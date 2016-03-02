@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "watchify -t babelify ./src/study4.js -o ./dist/study4.js"
+    "build": "watchify -t babelify ./src/study5.js -o ./dist/study5.js"
   },
   "author": "",
   "license": "ISC",
