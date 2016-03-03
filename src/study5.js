@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Map, List } from 'immutable';
+import { Map } from 'immutable';
 import { Dispatcher } from 'flux';
 import { MapStore, Container } from 'flux/utils';
 
@@ -23,9 +23,12 @@ const AppAction = {
 // Store
 class AppStore extends MapStore {
   getInitialState() {
-    return Map({
-      'value': null
-    });
+    return Map([
+      ['value', null]
+    ]);
+//    return {
+//      'value': null
+//    };
   }
   reduce(state, action) {
     console.dir('state: ' + state);
@@ -33,6 +36,9 @@ class AppStore extends MapStore {
     switch (action.type) {
       case act.HANDLECHANGE:
         return state.set('value', action.value);
+//        return {
+//          'value': action.value
+//        };
     }
   }
 }
@@ -46,9 +52,18 @@ class App extends React.Component {
     return [appStore];
   }
   static calculateState(prevState) {
-    console.log(appStore.get('value'));
+    //console.log(prevState);
+    //console.log(appStore.at('value'));
+    //console.log(appStore.get('value'));
+    //console.log(appStore._state.get('value'));
+    //console.log(appStore.getAll('value', prevState));
     //return appStore.get('value');
-    return appStore.getAll('value');
+    console.log(appStore.areEqual(appStore.getAll(), prevState));
+    console.log(appStore.getState());
+    console.log(prevState);
+    return {
+      value: appStore.get('value')
+    }
   }
   _handleChange(e) {
     e.preventDefault();

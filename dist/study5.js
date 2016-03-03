@@ -25634,9 +25634,10 @@ var AppStore = function (_MapStore) {
   _createClass(AppStore, [{
     key: 'getInitialState',
     value: function getInitialState() {
-      return (0, _immutable.Map)({
-        'value': null
-      });
+      return (0, _immutable.Map)([['value', null]]);
+      //    return {
+      //      'value': null
+      //    };
     }
   }, {
     key: 'reduce',
@@ -25646,6 +25647,9 @@ var AppStore = function (_MapStore) {
       switch (action.type) {
         case act.HANDLECHANGE:
           return state.set('value', action.value);
+        //        return {
+        //          'value': action.value
+        //        };
       }
     }
   }]);
@@ -25697,9 +25701,18 @@ var App = function (_React$Component) {
   }, {
     key: 'calculateState',
     value: function calculateState(prevState) {
-      console.log(appStore.get('value'));
+      //console.log(prevState);
+      //console.log(appStore.at('value'));
+      //console.log(appStore.get('value'));
+      //console.log(appStore._state.get('value'));
+      //console.log(appStore.getAll('value', prevState));
       //return appStore.get('value');
-      return appStore.getAll('value');
+      console.log(appStore.areEqual(appStore.getAll(), prevState));
+      console.log(appStore.getState());
+      console.log(prevState);
+      return {
+        value: appStore.get('value')
+      };
     }
   }]);
 
