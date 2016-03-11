@@ -58,7 +58,7 @@ class App extends React.Component {
     //console.log(appStore._state.get('value'));
     //console.log(appStore.getAll('value', prevState));
     //return appStore.get('value');
-    console.log(appStore.areEqual(appStore.getAll(), prevState));
+    //console.log(appStore.areEqual(appStore.getAll(), prevState));
     console.log(appStore.getState());
     console.log(prevState);
     return {

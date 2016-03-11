@@ -25588,8 +25588,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = require('react-dom');
 
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 var _immutable = require('immutable');
 
 var _flux = require('flux');
@@ -25609,12 +25607,13 @@ var dispatcher = new _flux.Dispatcher();
 
 // Action
 var act = {
-  HANDLECHANGE: 'handleChange'
+  SEND: 'send'
 };
-var AppAction = {
-  handleChange: function handleChange(val) {
+
+var FormAction = {
+  send: function send(val) {
     dispatcher.dispatch({
-      type: act.HANDLECHANGE,
+      type: act.SEND,
       value: val
     });
   }
@@ -25622,120 +25621,95 @@ var AppAction = {
 
 // Store
 
-var AppStore = function (_MapStore) {
-  _inherits(AppStore, _MapStore);
+var FormStore = function (_MapStore) {
+  _inherits(FormStore, _MapStore);
 
-  function AppStore() {
-    _classCallCheck(this, AppStore);
+  function FormStore() {
+    _classCallCheck(this, FormStore);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(AppStore).apply(this, arguments));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(FormStore).apply(this, arguments));
   }
 
-  _createClass(AppStore, [{
+  _createClass(FormStore, [{
     key: 'getInitialState',
     value: function getInitialState() {
       return (0, _immutable.Map)([['value', null]]);
-      //    return {
-      //      'value': null
-      //    };
     }
   }, {
     key: 'reduce',
     value: function reduce(state, action) {
-      console.dir('state: ' + state);
-      //console.dir('action: ' + action);
       switch (action.type) {
-        case act.HANDLECHANGE:
+        case act.SEND:
           return state.set('value', action.value);
-        //        return {
-        //          'value': action.value
-        //        };
       }
     }
   }]);
 
-  return AppStore;
+  return FormStore;
 }(_utils.MapStore);
 
+;
+
 // Storeのインスタンス生成
+var formStore = new FormStore(dispatcher);
 
+// View (React Component)
 
-var appStore = new AppStore(dispatcher);
+var FormApp = function (_Component) {
+  _inherits(FormApp, _Component);
 
-// View
+  function FormApp() {
+    _classCallCheck(this, FormApp);
 
-var App = function (_React$Component) {
-  _inherits(App, _React$Component);
-
-  function App() {
-    _classCallCheck(this, App);
-
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).apply(this, arguments));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(FormApp).apply(this, arguments));
   }
 
-  _createClass(App, [{
-    key: '_handleChange',
-    value: function _handleChange(e) {
-      e.preventDefault();
-      AppAction.handleChange(this.refs.myInput.value.trim());
-    }
-  }, {
+  _createClass(FormApp, [{
     key: 'render',
     value: function render() {
+      console.log(this.state);
       return _react2.default.createElement(
-        'div',
-        { ref: 'myComponent' },
-        _react2.default.createElement(
-          HelloMessage,
-          { text: 'Hello' },
-          this.state.value
-        ),
-        _react2.default.createElement('input', { type: 'text', value: this.state.value, ref: 'myInput', onChange: this._handleChange.bind(this) })
+        'form',
+        null,
+        _react2.default.createElement(FormInput, null),
+        _react2.default.createElement(FormDisplay, { data: this.state.value })
       );
     }
   }], [{
     key: 'getStores',
     value: function getStores() {
-      return [appStore];
+      return [formStore];
     }
   }, {
     key: 'calculateState',
     value: function calculateState(prevState) {
-      //console.log(prevState);
-      //console.log(appStore.at('value'));
-      //console.log(appStore.get('value'));
-      //console.log(appStore._state.get('value'));
-      //console.log(appStore.getAll('value', prevState));
-      //return appStore.get('value');
-      //console.log(appStore.areEqual(appStore.getAll(), prevState));
-      console.log(appStore.getState());
-      console.log(prevState);
       return {
-        value: appStore.get('value')
+        'value': formStore.get('value')
       };
     }
   }]);
 
-  return App;
-}(_react2.default.Component);
+  return FormApp;
+}(_react.Component);
 
-var HelloMessage = function (_React$Component2) {
-  _inherits(HelloMessage, _React$Component2);
+;
 
-  function HelloMessage() {
-    _classCallCheck(this, HelloMessage);
+var FormInput = function (_Component2) {
+  _inherits(FormInput, _Component2);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(HelloMessage).apply(this, arguments));
+  function FormInput() {
+    _classCallCheck(this, FormInput);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(FormInput).apply(this, arguments));
   }
 
-  _createClass(HelloMessage, [{
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      //console.log(nextProps.children);
-      //console.log(this.props.children);
-      //console.log(nextProps.children !== this.props.children);
-      //return nextProps.children !== this.props.children;
-      return true;
+  _createClass(FormInput, [{
+    key: '_send',
+    value: function _send(e) {
+      e.preventDefault();
+      FormAction.send(this.refs.myInput.value.trim());
+      this.refs.myInput.value = '';
+      return;
     }
   }, {
     key: 'render',
@@ -25743,21 +25717,50 @@ var HelloMessage = function (_React$Component2) {
       return _react2.default.createElement(
         'div',
         null,
-        this.props.text,
-        ' ',
-        this.props.children
+        _react2.default.createElement('input', { type: 'text', ref: 'myInput', defaultValue: '' }),
+        _react2.default.createElement(
+          'button',
+          { onClick: this._send.bind(this) },
+          'Send'
+        )
       );
     }
   }]);
 
-  return HelloMessage;
-}(_react2.default.Component);
+  return FormInput;
+}(_react.Component);
+
+;
+
+var FormDisplay = function (_Component3) {
+  _inherits(FormDisplay, _Component3);
+
+  function FormDisplay() {
+    _classCallCheck(this, FormDisplay);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(FormDisplay).apply(this, arguments));
+  }
+
+  _createClass(FormDisplay, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        this.props.data
+      );
+    }
+  }]);
+
+  return FormDisplay;
+}(_react.Component);
 
 ;
 
 // Container
-var AppContainer = _utils.Container.create(App);
+var FormAppContainer = _utils.Container.create(FormApp);
 
-_reactDom2.default.render(_react2.default.createElement(AppContainer, null), document.querySelector('.content'));
+// ReactDom
+(0, _reactDom.render)(_react2.default.createElement(FormAppContainer, null), document.querySelector('.content'));
 
 },{"flux":33,"flux/utils":44,"immutable":45,"react":176,"react-dom":47}]},{},[177]);
