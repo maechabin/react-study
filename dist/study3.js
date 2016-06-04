@@ -19054,39 +19054,71 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var App = function (_React$Component) {
   _inherits(App, _React$Component);
 
-  function App(props) {
+  function App() {
+    var _Object$getPrototypeO;
+
     _classCallCheck(this, App);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+    for (var _len = arguments.length, props = Array(_len), _key = 0; _key < _len; _key++) {
+      props[_key] = arguments[_key];
+    }
 
-    _this.state = { val: _this.props.val };
+    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(App)).call.apply(_Object$getPrototypeO, [this].concat(props)));
+
+    _this.state = {
+      val: _this.props.val
+    };
+    _this.onChange = _this.onChange.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
-    key: "handleChange",
-    value: function handleChange() {
-      this.setState({ val: this.refs.myInput.value });
-      console.log(this.refs.myComponent.childNodes[0].textContent);
+    key: "onChange",
+    value: function onChange() {
+      var _this2 = this;
+
+      // this.setState({val: this.refs.myInput.value});
+      this.setState(function (state, props) {
+        window.console.log(state);
+        window.console.log(props);
+        window.console.dir(_this2.refs);
+        return {
+          val: _this2.myInput.value
+        };
+      });
+      // console.log(this.refs.myComponent.childNodes[0].textContent);
     }
   }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       return _react2.default.createElement(
         "div",
-        { ref: "myComponent" },
+        null,
         _react2.default.createElement(
           HelloMessage,
           null,
           this.state.val
         ),
-        _react2.default.createElement("input", { type: "text", value: this.state.val, ref: "myInput", onChange: this.handleChange.bind(this) })
+        _react2.default.createElement("input", {
+          type: "text",
+          value: this.state.val,
+          ref: function ref(_ref) {
+            return _this3.myInput = _ref;
+          },
+          onChange: this.onChange
+        })
       );
     }
   }]);
 
   return App;
 }(_react2.default.Component);
+
+App.propTypes = {
+  val: _react2.default.PropTypes.string
+};
 
 function HelloMessage(props) {
   return _react2.default.createElement(
@@ -19096,15 +19128,14 @@ function HelloMessage(props) {
     " ",
     props.children
   );
-};
-
+}
 // Validationを定義
 HelloMessage.propTypes = {
   text: _react2.default.PropTypes.string.isRequired, // string型で必須
-  children: _react2.default.PropTypes.string.isRequired // string型で必須
-};
+  children: _react2.default.PropTypes.string.isRequired };
 
 // propsのデフォルト値を定義
+// string型で必須
 HelloMessage.defaultProps = {
   text: 'Hello',
   children: 'World'
