@@ -9,16 +9,10 @@ class App extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
   }
-  onChange() {
+  onChange(e) {
+    const value = e.target.value;
     // this.setState({val: this.refs.myInput.value});
-    this.setState((state, props) => {
-      window.console.log(state);
-      window.console.log(props);
-      window.console.dir(this.refs);
-      return {
-        val: this.myInput.value,
-      };
-    });
+    this.setState(() => ({ val: value }));
     // console.log(this.refs.myComponent.childNodes[0].textContent);
   }
   render() {

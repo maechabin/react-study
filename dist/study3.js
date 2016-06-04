@@ -19074,24 +19074,18 @@ var App = function (_React$Component) {
 
   _createClass(App, [{
     key: "onChange",
-    value: function onChange() {
-      var _this2 = this;
-
+    value: function onChange(e) {
+      var value = e.target.value;
       // this.setState({val: this.refs.myInput.value});
-      this.setState(function (state, props) {
-        window.console.log(state);
-        window.console.log(props);
-        window.console.dir(_this2.refs);
-        return {
-          val: _this2.myInput.value
-        };
+      this.setState(function () {
+        return { val: value };
       });
       // console.log(this.refs.myComponent.childNodes[0].textContent);
     }
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _react2.default.createElement(
         "div",
@@ -19105,7 +19099,7 @@ var App = function (_React$Component) {
           type: "text",
           value: this.state.val,
           ref: function ref(_ref) {
-            return _this3.myInput = _ref;
+            return _this2.myInput = _ref;
           },
           onChange: this.onChange
         })
